@@ -1,7 +1,4 @@
-#if running on EC2
-change line 3 in frontend/src/App.
-chage to
-      const API = 'http:your-public-ip:8000';
+
       
       
 # 🟢 Uptime Monitor
@@ -12,6 +9,11 @@ A lightweight full-stack URL uptime monitoring application that periodically pin
 
 ## 🚀 1-Line Setup
 
+#if running on EC2
+change line 3 in frontend/src/App.
+chage to
+      const API = 'http:your-public-ip:8000';
+      
 ```bash
 docker compose up --build
 ```
