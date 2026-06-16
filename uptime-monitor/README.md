@@ -1,3 +1,9 @@
+#if running on EC2
+change line 3 in frontend/src/App.
+chage to
+      const API = 'http:your-public-ip:8000';
+      
+      
 # 🟢 Uptime Monitor
 
 A lightweight full-stack URL uptime monitoring application that periodically pings registered URLs and displays their health status, response time, and history in real time.
