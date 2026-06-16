@@ -1,89 +1,115 @@
-# 🤖 AI Collaboration Log
+# AI_LOG.md
 
-This document provides a transparent record of how AI tools were used to build the Uptime Monitor MVP.
+## AI Collaboration Log
 
----
+### AI Tech Stack
 
-## 🛠 AI Tech Stack
+The following AI tools were used during development:
 
-| Tool | Model | Purpose |
-|------|-------|---------|
-| Claude (claude.ai) | Claude Sonnet 4.6 | Primary AI assistant — architecture decisions, backend API, frontend UI, Docker config, README |
-
----
-
-## 💬 Key Prompts That Shipped It
-
-### 1. Initial Architecture Prompt
-> *"I need to build a URL uptime monitor — a full-stack app that pings URLs every 60 seconds and shows up/down status and response time. Backend: FastAPI + SQLite + APScheduler. Frontend: React. Containerized with Docker Compose. Build the complete project."*
-
-Claude generated the full project skeleton: FastAPI routes, APScheduler job, SQLite schema, React dashboard with real-time polling, and Docker Compose configuration.
-
-### 2. Frontend UI Prompt
-> *"Build a React dashboard that fetches from the FastAPI backend every 15 seconds, displays each URL with a colored UP/DOWN badge, response time, last checked timestamp, and a history modal. Use dark theme inline styles — no external CSS libraries."*
-
-Claude produced the full `App.js` with dark-themed inline styles, status badges with glow effects, a history modal, and auto-refresh logic using `setInterval`.
-
-### 3. Docker & Nginx Prompt
-> *"Write a multi-stage Dockerfile for the React frontend that builds with Node and serves with Nginx on port 3000. Write the nginx.conf and docker-compose.yml that wires backend and frontend together with a persistent SQLite volume."*
-
-Claude generated the multi-stage Dockerfile, `nginx.conf`, and `docker-compose.yml` with health checks and volume mounts.
-
-### 4. Deployment Sketch Prompt
-> *"Write a brief hypothetical Terraform snippet for deploying this on AWS — React on S3 + CloudFront, FastAPI on ECS Fargate with an ALB, SQLite replaced by RDS. Keep it concise, not production-hardened."*
-
-Claude produced the Terraform sketch included in the README.
+* ChatGPT (GPT-5.5) – architecture design, backend implementation guidance, debugging support, README drafting.
+* Cursor IDE – code generation and iterative development.
+* GitHub Copilot – inline code completion and refactoring assistance.
 
 ---
 
-## ⚠️ Course Corrections
+## Development Workflow
 
-### Issue 1: CORS error blocking frontend → backend calls
+The project was built incrementally using AI-assisted development.
 
-**What AI generated initially:**
-The initial FastAPI backend did not include CORS middleware, causing the React frontend to get blocked by the browser with a CORS policy error when calling `http://localhost:8000`.
+### Phase 1: Architecture Design
 
-**How I identified it:**
-Browser console showed: `Access to XMLHttpRequest at 'http://localhost:8000/urls' from origin 'http://localhost:3000' has been blocked by CORS policy.`
+Prompt:
 
-**Fix prompt I used:**
-> *"The FastAPI backend is missing CORS middleware. Add CORSMiddleware allowing all origins so the React frontend on port 3000 can call the API on port 8000."*
+"Design a simple uptime monitoring application for a few dozen URLs. The solution should include a FastAPI backend, React frontend, SQLite database, Docker Compose setup, and periodic health checks."
 
-Claude immediately added the correct middleware block:
-```python
-from fastapi.middleware.cors import CORSMiddleware
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
-```
+Outcome:
 
----
+* FastAPI selected for backend development.
+* React selected for frontend dashboard.
+* SQLite selected for MVP persistence.
+* APScheduler selected for periodic URL monitoring.
 
-### Issue 2: React build environment variable not passed to Docker
+Reasoning:
 
-**What AI generated initially:**
-The `docker-compose.yml` set `REACT_APP_API_URL` as a runtime environment variable. However, React bakes environment variables into the static build at **build time**, not runtime — so the variable was not available inside the browser.
-
-**How I identified it:**
-The frontend was calling `undefined/urls` instead of `http://localhost:8000/urls`.
-
-**Fix prompt I used:**
-> *"REACT_APP_API_URL needs to be passed as a Docker build ARG during `npm run build`, not as a runtime ENV. Update the Dockerfile and docker-compose.yml to pass it as a build argument."*
-
-Claude corrected the Dockerfile to use `ARG REACT_APP_API_URL` and the compose file to use `build.args`.
+The assignment emphasized execution speed and simplicity over large-scale production architecture.
 
 ---
 
-### Issue 3: SQLite path not persistent across container restarts
+### Phase 2: Backend Development
 
-**What AI generated initially:**
-The database was being written to `/app/monitor.db` inside the container, which was lost on every `docker compose down`.
+Prompt:
 
-**Fix:**
-> *"Move the SQLite database to `/data/monitor.db` and mount a named Docker volume at `/data` so data persists across container restarts."*
+"Generate a FastAPI backend that allows URL registration, stores health check history, and performs periodic uptime checks."
 
-Claude updated `main.py` to use `/data/monitor.db` and the `docker-compose.yml` to define and mount the `sqlite_data` volume.
+Outcome:
+
+* URL registration API.
+* Health check storage.
+* Response time measurement.
+* Scheduler-based monitoring.
+
+Manual Changes:
+
+* Added application health endpoint.
+* Improved Docker container configuration.
+* Added database persistence.
 
 ---
 
-## 📝 Summary
+### Phase 3: Frontend Development
 
-AI was used to rapidly generate all layers I don't write daily (primarily the React frontend, multi-stage Docker builds, and Nginx config). My DevOps background meant I validated and corrected the infrastructure layer — particularly around Docker networking, build-time vs runtime environment variables, and volume persistence — while leaning on AI to accelerate the UI and API boilerplate.
+Prompt:
+
+"Create a React dashboard that displays monitored URLs, current status, and response times. Refresh data automatically."
+
+Outcome:
+
+* URL submission form.
+* Monitoring dashboard.
+* Automatic status updates.
+
+Manual Changes:
+
+* Simplified component structure.
+* Improved API integration.
+* Added error handling.
+
+---
+
+## Course Correction Example
+
+Initial AI Suggestion:
+
+The AI proposed a Redis + Celery architecture for scheduling health checks.
+
+Problem:
+
+For the scale described in the assignment (a few dozen URLs), introducing Redis and Celery increased operational complexity unnecessarily.
+
+Correction Prompt:
+
+"Remove Redis and Celery. Use a lightweight scheduler suitable for an MVP deployment."
+
+Final Solution:
+
+APScheduler was used instead of Redis/Celery, resulting in a simpler and easier-to-maintain architecture.
+
+---
+
+## Engineering Decisions
+
+Several AI-generated suggestions were intentionally not implemented:
+
+* Kubernetes deployment
+* Microservice decomposition
+* Message queue architecture
+* Distributed caching layer
+
+These approaches were intentionally rejected because the assignment prioritized simplicity, rapid execution, and an MVP-scale solution.
+
+---
+
+## Final Reflection
+
+AI significantly accelerated development by generating boilerplate code, suggesting architecture patterns, and assisting with debugging. However, final design decisions, architectural trade-offs, code integration, testing, and deployment structure were manually reviewed and adjusted to align with the assignment requirements.
+
