@@ -6,9 +6,22 @@
 
 The following AI tools were used during development:
 
-* ChatGPT (GPT-5.5) – architecture design, backend implementation guidance, debugging support, README drafting.
-* Cursor IDE – code generation and iterative development.
-* GitHub Copilot – inline code completion and refactoring assistance.
+* ChatGPT (GPT-5.5) – architecture design, backend implementation guidance, debugging support, Docker configuration, README drafting, and deployment planning.
+* Claude Sonnet – architecture validation, frontend implementation suggestions, code review, and alternative design approaches.
+* Cursor IDE – AI-assisted coding, code generation, and iterative development workflow.
+* GitHub Copilot – inline code completion, refactoring assistance, and boilerplate generation.
+
+### Why Multiple AI Tools Were Used
+
+Different AI systems were used for different purposes:
+
+* ChatGPT was primarily used for system design discussions, DevOps decisions, Docker setup, and deployment planning.
+* Claude was used to cross-check architecture decisions, review implementation approaches, and generate alternative solutions for frontend and backend components.
+* Cursor accelerated end-to-end development through integrated AI-assisted coding workflows.
+* GitHub Copilot improved development speed through contextual code suggestions inside the IDE.
+
+Using multiple AI tools allowed architectural decisions and implementation approaches to be validated from different perspectives rather than relying on a single model.
+
 
 ---
 
