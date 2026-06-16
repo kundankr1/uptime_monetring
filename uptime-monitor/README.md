@@ -84,14 +84,14 @@ The scheduler pings all URLs every 60 seconds. The dashboard auto-refreshes ever
 |--------|----------|-------------|
 | `POST` | `/urls` | Register a new URL |
 | `GET` | `/urls` | List all URLs with latest check |
-| `DELETE` | `/urls/{id}` | Remove a URL |
+| `DELETE` | `/urls/{id}` | Remove a URL |### Backend API Response
 | `GET` | `/urls/{id}/history` | Get check history (last 20) |
 | `GET` | `/health` | Backend health check |
 
 
---frontend -
+-### Uptime Monitor Dashboard-
 <img width="1338" height="680" alt="uptime moniter" src="https://github.com/user-attachments/assets/8ff244b0-ee9a-409c-a881-eab0e5f36b99" />
---backend -
+-### Backend API Response-
 <img width="1333" height="678" alt="uptime database" src="https://github.com/user-attachments/assets/efb04b40-4abb-4530-8ecd-b864e8f5dfe4" />
 
 
