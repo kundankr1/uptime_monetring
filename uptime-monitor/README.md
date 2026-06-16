@@ -88,7 +88,13 @@ The scheduler pings all URLs every 60 seconds. The dashboard auto-refreshes ever
 | `GET` | `/urls/{id}/history` | Get check history (last 20) |
 | `GET` | `/health` | Backend health check |
 
----
+
+--frontend -
+<img width="1338" height="680" alt="uptime moniter" src="https://github.com/user-attachments/assets/8ff244b0-ee9a-409c-a881-eab0e5f36b99" />
+--backend -
+<img width="1333" height="678" alt="uptime database" src="https://github.com/user-attachments/assets/efb04b40-4abb-4530-8ecd-b864e8f5dfe4" />
+
+
 
 ## ☁️ Deployment Sketch (AWS)
 
